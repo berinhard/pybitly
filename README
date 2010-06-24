@@ -1,0 +1,3 @@
+pybitly is a client for the Bit.ly API.
+
+The objectve of this project is to create a command line client to the API. It already exists a Python project to serve as such a client. But, there is no command line usage. It's a Python module so you can use it to consume the API in your project. Besides that, I'm using this project to practise and get more confident with Python programming.
