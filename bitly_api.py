@@ -26,15 +26,10 @@ class API(object):
             'longUrl': long_url,
         }
         api_url = self._get_api_method_url('shorten', parameters)
-        response = json.loads(self._invoke_api(api_url))
-        if response['status_code'] == 403:
-            print 'Rate limit exceeded'
-        elif response['status_code'] == 503:
-            print 'Unknow error or temporary unavailability'
-        elif response['status_code'] == 500:
-            print 'Invalid request format: %s' % response['status_txt']
-        elif response['status_code'] == 200:
-            print 'Shorten URL: %s' % response[data][url]
+        status_code, response = self._invoke_api(api_url)
+        if status_code != 200:
+            response['error_message'] = _get_errror_message(status_code, response)
+        return response
 
     def _get_rest_method_parameters(self, parameters):
         parameters_url = ''
@@ -51,8 +46,19 @@ class API(object):
         http = Http()
         try:
             response = http.request(url, "GET")
-            response = response[1]
-            return response
+            response = json.loads(response[1])
+            return response['status_code'], response
         except Exception as e:
-            print 'A connection error happenned'
-            sys.exit(0)
+            return 503, {}
+
+    def _get_errror_message(self, status_code, response):
+        error_message = ''
+        if status_code == 403:
+            error_message = 'Rate limit exceeded'
+        elif status_code == 503:
+            error_message = 'Unknow error or temporary unavailability'
+        elif status_code == 500:
+            error_message = 'Invalid request format' % response['status_txt']
+            if response.has_key('status_txt'):
+                error_message += ': %s' % response['status_txt']
+        return error_message
