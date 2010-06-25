@@ -23,3 +23,8 @@ class API(object):
         for parameter, value in parameters.items():
             parameters_url += '%s=%s&' % (parameter, value)
         return parameters_url[:-1]
+
+    def _get_api_method_url(self, method, parameters):
+        base_path = self.api_host + self.api_path[method]
+        parameters_url = self._get_rest_method_parameters(parameters)
+        return base_path + '/' + parameters_url
