@@ -1,3 +1,6 @@
+from httplib2 import Http
+import sys
+
 class API(object):
 
     api_host = 'http://api.bit.ly'
@@ -16,7 +19,13 @@ class API(object):
         self.api_key = 'R_3c1df70d83b89a4cda9322d0fab4cbd1'
 
     def shorten(self, long_url):
-        base_path = self.api_host + self['shorten']
+        parameters = {
+            'login': self.login,
+            'apiKey': self.api_key,
+            'longUrl': long_url,
+        }
+        api_url = self._get_api_method_url('shorten', parameters)
+        print self._invoke_api(api_url)
 
     def _get_rest_method_parameters(self, parameters):
         parameters_url = ''
@@ -28,3 +37,16 @@ class API(object):
         base_path = self.api_host + self.api_path[method]
         parameters_url = self._get_rest_method_parameters(parameters)
         return base_path + '/' + parameters_url
+
+    def _invoke_api(self, url):
+        http = Http()
+        try:
+            response = http.request(
+                url,
+                "GET",
+            )
+            response = response[1]
+            return response
+        except Exception as e:
+            print 'deu merda'
+            sys.exit(0)
