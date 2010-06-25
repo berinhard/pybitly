@@ -24,5 +24,7 @@ class TestBitlyAPIClient(unittest.TestCase):
         expected = 'http://api.bit.ly/v3/shorten/login=my_login&apiKey=R_thisismycrazyapikey&longUrl=www.bernardofontes.net'
         self.assertEquals(self.api._get_api_method_url('shorten', parameters), expected)
 
+
+
 if __name__ == '__main__':
     unittest.main()

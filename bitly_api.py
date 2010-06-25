@@ -1,4 +1,5 @@
 from httplib2 import Http
+import json
 import sys
 
 class API(object):
@@ -25,7 +26,15 @@ class API(object):
             'longUrl': long_url,
         }
         api_url = self._get_api_method_url('shorten', parameters)
-        print self._invoke_api(api_url)
+        response = json.loads(self._invoke_api(api_url))
+        if response['status_code'] == 403:
+            print 'Rate limit exceeded'
+        elif response['status_code'] == 503:
+            print 'Unknow error or temporary unavailability'
+        elif response['status_code'] == 500:
+            print 'Invalid request format: %s' % response['status_txt']
+        elif response['status_code'] == 200:
+            print 'Shorten URL: %s' % response[data][url]
 
     def _get_rest_method_parameters(self, parameters):
         parameters_url = ''
@@ -41,12 +50,9 @@ class API(object):
     def _invoke_api(self, url):
         http = Http()
         try:
-            response = http.request(
-                url,
-                "GET",
-            )
+            response = http.request(url, "GET")
             response = response[1]
             return response
         except Exception as e:
-            print 'deu merda'
+            print 'A connection error happenned'
             sys.exit(0)
