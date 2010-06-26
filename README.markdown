@@ -18,22 +18,27 @@ or
 
     sudo easy_install mock
 
-Check the mock project at: http://pypi.python.org/pypi/mock/
+Check the mock project at [http://pypi.python.org/pypi/mock/](http://pypi.python.org/pypi/mock/)
+
+
+Installation
+------------
+To download pybitly and add the project path to your ~/.bashrc, just execute:
+
+    cd
+    wget http://github.com/turicas/pybitly/tarball/master -O pybitly.tar.gz
+    tar xfz pybitly.tar.gz
+    rm pybitly.tar.gz
+    mv *-pybitly-* pybitly
+    echo 'PATH="$PATH:'$(pwd)'/pybitly"' >> .bashrc
+    . .bashrc
+
 
 
 Usage
 -----
-To use the command "pybitly" directly, put the path to this project on your $PATH.
-Add this line to the end of the ~/.bashrc file:
-
-    PATH="$PATH:/path/to/pybitly/repository"
-
-So, to load this new ~/.bashrc, open a new bash session or execute:
-
-    . ~/.bashrc
-
-And then you can use it from any directory in your bash:
 
     pybitly http://big-url-to-be-shorten/
 
-So the short URL will be shown on the terminal. Enjoy! :-)
+The short URL will be shown on the terminal.
+Enjoy! :-)
