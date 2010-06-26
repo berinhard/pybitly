@@ -26,10 +26,12 @@ class API(object):
             'longUrl': long_url,
         }
         api_url = self._get_api_method_url('shorten', parameters)
-        status_code, response = self._invoke_api(api_url)
-        if status_code != 200:
+        response = self._invoke_api(api_url)
+        status_code = response['status_code']
+        if status_code!= 200:
             response['error_message'] = self._get_errror_message(status_code, response)
-        return status_code, response
+        return response
+
 
     def _get_rest_method_parameters(self, parameters):
         parameters_url = ''
@@ -40,7 +42,7 @@ class API(object):
     def _get_api_method_url(self, method, parameters):
         base_path = self.api_host + self.api_path[method]
         parameters_url = self._get_rest_method_parameters(parameters)
-        return base_path + '/' + parameters_url
+        return base_path + '?' + parameters_url
 
     def _invoke_api(self, url):
         http = Http()
