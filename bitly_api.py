@@ -28,8 +28,8 @@ class API(object):
         api_url = self._get_api_method_url('shorten', parameters)
         status_code, response = self._invoke_api(api_url)
         if status_code != 200:
-            response['error_message'] = _get_errror_message(status_code, response)
-        return response
+            response['error_message'] = self._get_errror_message(status_code, response)
+        return status_code, response
 
     def _get_rest_method_parameters(self, parameters):
         parameters_url = ''
@@ -58,7 +58,7 @@ class API(object):
         elif status_code == 503:
             error_message = 'Unknow error or temporary unavailability'
         elif status_code == 500:
-            error_message = 'Invalid request format' % response['status_txt']
+            error_message = 'Invalid request format'
             if response.has_key('status_txt'):
                 error_message += ': %s' % response['status_txt']
         return error_message
