@@ -1,5 +1,5 @@
-INTRODUCTION
-============
+Introduction
+------------
 pybitly is a tool to consume the Bit.ly API.
 
 The objectve of this project is to create a client to the Bit.ly API.
@@ -8,14 +8,21 @@ It's just a Python module that you can use it to consume the API inside your pro
 Besides that, I'm using this project to practise, get more confident with Python programming and learn more about it.
 
 
-DEPENDENCIES
-============
-To run the tests you need the "mock" module.
-To install, execute: sudo pip install mock
+Dependencies
+------------
+To run the tests you need the "mock" module. To install "mock", execute:
+
+    sudo pip install mock
+
+or
+
+    sudo easy_install mock
+
+Check the mock project at: http://pypi.python.org/pypi/mock/
 
 
-USAGE
-=====
+Usage
+-----
 To use the command "pybitly" directly, put the path to this project on your $PATH.
 Add this line to the end of the ~/.bashrc file:
 
