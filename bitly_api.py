@@ -49,18 +49,18 @@ class API(object):
         try:
             response = http.request(url, "GET")
             response = json.loads(response[1])
-            return response['status_code'], response
+            return response
         except Exception as e:
-            return 503, {}
+            return {'status_code':503}
 
     def _get_errror_message(self, status_code, response):
         error_message = ''
         if status_code == 403:
-            error_message = 'Rate limit exceeded'
+            error_message = 'ERROR 403: Rate limit exceeded'
         elif status_code == 503:
-            error_message = 'Unknow error or temporary unavailability'
+            error_message = 'ERROR 503: Unknow error or temporary unavailability'
         elif status_code == 500:
-            error_message = 'Invalid request format'
+            error_message = 'ERROR 500: Invalid request format'
             if response.has_key('status_txt'):
                 error_message += ': %s' % response['status_txt']
         return error_message

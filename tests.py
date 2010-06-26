@@ -50,14 +50,14 @@ class TestShortenAPI(unittest.TestCase):
         api_response = self.api.shorten('http://www.bernardofontes.net')
         self.assertEquals(api_response['status_code'], 403)
         self.assertTrue(api_response.has_key('error_message'))
-        self.assertEquals(api_response['error_message'], 'Rate limit exceeded')
+        self.assertTrue('Rate limit exceeded' in api_response['error_message'])
 
     @patch_object(API, '_invoke_api', mocked_API_request_failure(503))
     def test_shorten_api_response_503(self):
         api_response = self.api.shorten('http://www.bernardofontes.net')
         self.assertEquals(api_response['status_code'], 503)
         self.assertTrue(api_response.has_key('error_message'))
-        self.assertEquals(api_response['error_message'], 'Unknow error or temporary unavailability')
+        self.assertTrue('Unknow error or temporary unavailability' in api_response['error_message'])
 
     @patch_object(API, '_invoke_api', mocked_API_request_failure(500))
     def test_shorten_api_response_500(self):
