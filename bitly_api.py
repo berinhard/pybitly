@@ -32,7 +32,6 @@ class API(object):
             response['error_message'] = self._get_errror_message(status_code, response)
         return response
 
-
     def _get_rest_method_parameters(self, parameters):
         parameters_url = ''
         for parameter, value in parameters.items():
