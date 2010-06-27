@@ -23,11 +23,7 @@ class API(object):
         }
         api_url = self._get_api_method_url('shorten', parameters)
         response = self._invoke_api(api_url)
-        status_code = response['status_code']
-        response.update(response.pop('data'))
-        if status_code!= 200:
-            response['error_message'] = self._get_errror_message(status_code, response)
-        return response
+        return self._prepare_response(response)
 
     def expand(self, short_urls):
         parameters = {
@@ -37,6 +33,9 @@ class API(object):
         }
         api_url = self._get_api_method_url('expand', parameters)
         response = self._invoke_api(api_url)
+        return self._prepare_response(response)
+
+    def _prepare_response(self, response):
         status_code = response['status_code']
         response.update(response.pop('data'))
         if status_code!= 200:
