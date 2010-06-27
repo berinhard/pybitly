@@ -28,8 +28,10 @@ class TestBitlyAPIClientFunctions(unittest.TestCase):
 def mocked_API_request_failure(status_code):
     mocked_api_response = {
         'status_code': status_code,
-        'status_txt': 'something happened',
-        'url': 'http://bit.ly/hash',
+        'data':{
+            'status_txt': 'something happened',
+            'url': 'http://bit.ly/hash',
+        }
     }
     return Mock(return_value=(mocked_api_response))
 
@@ -41,28 +43,32 @@ class TestShortenAPI(unittest.TestCase):
     @patch_object(API, '_invoke_api', mocked_API_request_failure(200))
     def test_shorten_api_response_200(self):
         api_response = self.api.shorten('http://www.bernardofontes.net')
-        self.assertEquals(api_response['status_code'], 200)
+        status_code = api_response['status_code']
+        self.assertEquals(status_code, 200)
         self.assertTrue(api_response.has_key('url'))
         self.assertTrue(api_response['url'])
 
     @patch_object(API, '_invoke_api', mocked_API_request_failure(403))
     def test_shorten_api_response_403(self):
         api_response = self.api.shorten('http://www.bernardofontes.net')
-        self.assertEquals(api_response['status_code'], 403)
+        status_code = api_response['status_code']
+        self.assertEquals(status_code, 403)
         self.assertTrue(api_response.has_key('error_message'))
         self.assertTrue('Rate limit exceeded' in api_response['error_message'])
 
     @patch_object(API, '_invoke_api', mocked_API_request_failure(503))
     def test_shorten_api_response_503(self):
         api_response = self.api.shorten('http://www.bernardofontes.net')
-        self.assertEquals(api_response['status_code'], 503)
+        status_code = api_response['status_code']
+        self.assertEquals(status_code, 503)
         self.assertTrue(api_response.has_key('error_message'))
         self.assertTrue('Unknow error or temporary unavailability' in api_response['error_message'])
 
     @patch_object(API, '_invoke_api', mocked_API_request_failure(500))
     def test_shorten_api_response_500(self):
         api_response = self.api.shorten('http://www.bernardofontes.net')
-        self.assertEquals(api_response['status_code'], 500)
+        status_code = api_response['status_code']
+        self.assertEquals(status_code, 500)
         self.assertTrue(api_response.has_key('error_message'))
         self.assertTrue('Invalid request format' in api_response['error_message'])
 

@@ -10,7 +10,7 @@ def bitly_shorten(long_url):
     if 'error_message' in response:
         return True, response['error_message']
     else:
-        return False, response['data']['url']
+        return False, response['url']
 
 
 def usage():
