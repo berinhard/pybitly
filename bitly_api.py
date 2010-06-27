@@ -32,14 +32,24 @@ class API(object):
     def expand(self, short_urls):
         parameters = {
             'login': self.login,
-            'apiKey': self.apiKey,
+            'apiKey': self.api_key,
             'shortUrl': short_urls,
         }
+        api_url = self._get_api_method_url('expand', parameters)
+        response = self._invoke_api(api_url)
+        status_code = response['status_code']
+        response.update(response.pop('data'))
+        if status_code!= 200:
+            response['error_message'] = self._get_errror_message(status_code, response)
+        return response
 
     def _get_rest_method_parameters(self, parameters):
         parameters_url = ''
         for parameter, value in parameters.items():
-            parameters_url += '%s=%s&' % (parameter, value)
+            if isinstance(value, list):
+                parameters_url += ''.join(['%s=%s&' % (parameter, v) for v in value])
+            else:
+                parameters_url += '%s=%s&' % (parameter, value)
         return parameters_url[:-1]
 
     def _get_api_method_url(self, method, parameters):
