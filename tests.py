@@ -1,6 +1,6 @@
 import unittest
 from bitly_api import API
-from mock import Mock, patch_object
+from mock import Mock, patch
 
 __all__ = [
     'TestBitlyAPIClientFunctions',
@@ -46,7 +46,7 @@ class TestShortenAPI(unittest.TestCase):
     def setUp(self):
         self.api = API()
 
-    @patch_object(API, '_invoke_api', mocked_API_request_failure(200))
+    @patch.object(API, '_invoke_api', mocked_API_request_failure(200))
     def test_shorten_api_response_200(self):
         api_response = self.api.shorten('http://www.bernardofontes.net')
         status_code = api_response['status_code']
@@ -54,7 +54,7 @@ class TestShortenAPI(unittest.TestCase):
         self.assertTrue(api_response.has_key('url'))
         self.assertTrue(api_response['url'])
 
-    @patch_object(API, '_invoke_api', mocked_API_request_failure(403))
+    @patch.object(API, '_invoke_api', mocked_API_request_failure(403))
     def test_shorten_api_response_403(self):
         api_response = self.api.shorten('http://www.bernardofontes.net')
         status_code = api_response['status_code']
@@ -62,7 +62,7 @@ class TestShortenAPI(unittest.TestCase):
         self.assertTrue(api_response.has_key('error_message'))
         self.assertTrue('Rate limit exceeded' in api_response['error_message'])
 
-    @patch_object(API, '_invoke_api', mocked_API_request_failure(503))
+    @patch.object(API, '_invoke_api', mocked_API_request_failure(503))
     def test_shorten_api_response_503(self):
         api_response = self.api.shorten('http://www.bernardofontes.net')
         status_code = api_response['status_code']
@@ -70,7 +70,7 @@ class TestShortenAPI(unittest.TestCase):
         self.assertTrue(api_response.has_key('error_message'))
         self.assertTrue('Unknow error or temporary unavailability' in api_response['error_message'])
 
-    @patch_object(API, '_invoke_api', mocked_API_request_failure(500))
+    @patch.object(API, '_invoke_api', mocked_API_request_failure(500))
     def test_shorten_api_response_500(self):
         api_response = self.api.shorten('http://www.bernardofontes.net')
         status_code = api_response['status_code']
@@ -101,7 +101,7 @@ class TestExpandAPI(unittest.TestCase):
     def setUp(self):
         self.api = API()
 
-    @patch_object(API, '_invoke_api', mocked_expand_API_request_failure(200))
+    @patch.object(API, '_invoke_api', mocked_expand_API_request_failure(200))
     def test_expand_api_response_200(self):
         api_response = self.api.expand(['http://bit.ly/hash', 'http://bit.ly/hash2'])
         status_code = api_response['status_code']
@@ -109,7 +109,7 @@ class TestExpandAPI(unittest.TestCase):
         self.assertTrue(api_response.has_key('expand'))
         self.assertTrue(len(api_response['expand']) == 2)
 
-    @patch_object(API, '_invoke_api', mocked_expand_API_request_failure(403))
+    @patch.object(API, '_invoke_api', mocked_expand_API_request_failure(403))
     def test_expand_api_response_403(self):
         api_response = self.api.expand(['http://bit.ly/hash', 'http://bit.ly/hash2'])
         status_code = api_response['status_code']
@@ -117,7 +117,7 @@ class TestExpandAPI(unittest.TestCase):
         self.assertTrue(api_response.has_key('error_message'))
         self.assertTrue('Rate limit exceeded' in api_response['error_message'])
 
-    @patch_object(API, '_invoke_api', mocked_expand_API_request_failure(503))
+    @patch.object(API, '_invoke_api', mocked_expand_API_request_failure(503))
     def test_expand_api_response_503(self):
         api_response = self.api.expand(['http://bit.ly/hash', 'http://bit.ly/hash2'])
         status_code = api_response['status_code']
@@ -125,7 +125,7 @@ class TestExpandAPI(unittest.TestCase):
         self.assertTrue(api_response.has_key('error_message'))
         self.assertTrue('Unknow error or temporary unavailability' in api_response['error_message'])
 
-    @patch_object(API, '_invoke_api', mocked_expand_API_request_failure(500))
+    @patch.object(API, '_invoke_api', mocked_expand_API_request_failure(500))
     def test_expand_api_response_500(self):
         api_response = self.api.expand(['http://bit.ly/hash', 'http://bit.ly/hash2'])
         status_code = api_response['status_code']
