@@ -8,11 +8,7 @@ class API(object):
     api_path = {
         'shorten': '/v3/shorten',
         'expand': '/v3/expand',
-        'validade': '/v3/validade',
         'clicks': '/v3/clicks',
-        'bitly_pro_domain': '/v3/bitly_pro_domain',
-        'lookup': '/v3/lookup',
-        'authenticade': '/v3/authenticate'
     }
 
     def __init__(self):
