@@ -20,32 +20,32 @@ def bitly_expand(short_urls):
     else:
         return False, response['expand']
 
-def usage():
-    print "pybitly: %s is not a pybitly command. See 'pybitly --help'" % sys.argv[1]
+def wrong_usage_warning(error_message = ''):
+    print "pybitly: %s See 'pybitly --help'" % error_message
     sys.exit(1)
 
 if len(sys.argv) < 2:
-    print "pybitly: no parameter specified. See 'pybitly --help'"
+    wrong_usage_warning('no command specified.')
     sys.exit(1)
 
-operation = sys.argv[1]
+command = sys.argv[1]
 
-if operation == '--shorten':
+if command == '--shorten':
     #the operation accepts only one URL
     error, message = bitly_shorten(sys.argv[2])
     if error:
         print message
-        usage()
+        sys.exit(1)
     print message
 
-elif operation == '--expand':
+elif command == '--expand':
     #the operation accepts more than one url
     error, response = bitly_expand(sys.argv[2:])
     if error:
         print response
-        usage()
-    for i in response:
-        print i['short_url'] + ' corresponds to ' + i['long_url']
+        sys.exit(1)
+    for url in response:
+        print url['short_url'] + ' corresponds to ' + url['long_url']
 
 else:
-    usage()
+    wrong_usage_warning('%s is not a pybitly command.' % command)
