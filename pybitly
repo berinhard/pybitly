@@ -43,5 +43,9 @@ elif command == '--expand':
     for url in response:
         print url['short_url'] + ' corresponds to ' + url['long_url']
 
+elif command == '--help':
+    print ' - Please, somebody help me???'
+    print ' - Wait for a while...'
+
 else:
     wrong_usage_warning('%s is not a pybitly command.' % command)
