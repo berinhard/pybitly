@@ -26,7 +26,7 @@ Installation
 To download pybitly and add the project path to your ~/.bashrc, just execute:
 
     cd
-    wget http://github.com/turicas/pybitly/tarball/master -O pybitly.tar.gz
+    wget http://github.com/berinhard/pybitly/tarball/master -O pybitly.tar.gz
     tar xfz pybitly.tar.gz
     rm pybitly.tar.gz
     mv *-pybitly-* pybitly
@@ -38,7 +38,14 @@ To download pybitly and add the project path to your ~/.bashrc, just execute:
 Usage
 -----
 
-    pybitly http://big-url-to-be-shorten/
+Shorten API:
+    pybitly --shorten http://big-url-to-be-shorten/
+
+Expand API:
+    pybitly --expand http://bit.ly/short-url-1 http://bit.ly/short-url-2
+
+Help:
+    pybitly --help
 
 The short URL will be shown on the terminal.
 Enjoy! :-)
