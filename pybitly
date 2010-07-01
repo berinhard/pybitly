@@ -21,11 +21,14 @@ def bitly_expand(short_urls):
         for url in response:
             print url['short_url'] + ' corresponds to ' + url['long_url']
 
+def bitly_help():
+    print 'Somebody help me?\nWait for a while...'
+
 def wrong_usage_warning(error_message = ''):
     print "pybitly: %s See 'pybitly --help'" % error_message
     sys.exit(1)
 
-if len(sys.argv) < 3:
+if len(sys.argv) < 2:
     wrong_usage_warning('no command specified.')
     sys.exit(1)
 
@@ -37,5 +40,7 @@ command = sys.argv[1]
 
 if command in commands_dict:
     commands_dict[command](sys.argv[2:])
+elif command == '--help':
+    bitly_help()
 else:
     wrong_usage_warning('%s is not a pybitly command.' % command)
