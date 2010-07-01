@@ -37,9 +37,10 @@ class API(object):
 
     def _prepare_response(self, response):
         status_code = response['status_code']
-        response.update(response.pop('data'))
         if status_code!= 200:
             response['error_message'] = self._get_errror_message(status_code, response)
+        else:
+            response.update(response.pop('data'))
         return response
 
     def _get_rest_method_parameters(self, parameters):

@@ -6,46 +6,36 @@ from bitly_api import API
 
 def bitly_shorten(long_url):
     api = API()
-    response = api.shorten(long_url)
+    response = api.shorten(long_url[0])
     if 'error_message' in response:
-        return response['error_message']
+        print response['error_message']
     else:
-        return response['url']
+        print response['url']
 
 def bitly_expand(short_urls):
     api = API()
     response = api.expand(short_urls)
     if 'error_message' in response:
-        return True, response['error_message']
+        print response['error_message']
     else:
-        return False, response['expand']
+        for url in response:
+            print url['short_url'] + ' corresponds to ' + url['long_url']
 
 def wrong_usage_warning(error_message = ''):
     print "pybitly: %s See 'pybitly --help'" % error_message
     sys.exit(1)
 
-if len(sys.argv) < 2:
+if len(sys.argv) < 3:
     wrong_usage_warning('no command specified.')
     sys.exit(1)
 
+commands_dict = {
+    '--shorten':bitly_shorten,
+    '--expand':bitly_expand,
+}
 command = sys.argv[1]
 
-if command == '--shorten':
-    #the operation accepts only one URL
-    print bitly_shorten(sys.argv[2])
-
-elif command == '--expand':
-    #the operation accepts more than one url
-    error, response = bitly_expand(sys.argv[2:])
-    if error:
-        print response
-        sys.exit(1)
-    for url in response:
-        print url['short_url'] + ' corresponds to ' + url['long_url']
-
-elif command == '--help':
-    print ' - Please, somebody help me???'
-    print ' - Wait for a while...'
-
+if command in commands_dict:
+    commands_dict[command](sys.argv[2:])
 else:
     wrong_usage_warning('%s is not a pybitly command.' % command)
