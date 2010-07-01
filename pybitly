@@ -12,17 +12,37 @@ def bitly_shorten(long_url):
     else:
         return False, response['url']
 
+def bitly_expand(short_urls):
+    api = API()
+    response = api.expand(short_urls)
+    if 'error_message' in response:
+        return True, response['error_message']
+    else:
+        return False, response['expand']
 
 def usage():
     print "Usage: %s <URL_to_be_shortened>" % sys.argv[0]
     sys.exit(1)
 
-
 if len(sys.argv) < 2:
     usage()
 
-error, message = bitly_shorten(sys.argv[1])
-if error:
+operation = sys.argv[1]
+
+if operation == '--shorten':
+    error, message = bitly_shorten(sys.argv[2])
+    if error:
+        print message
+        usage()
     print message
+
+elif operation == '--expand':
+    error, response = bitly_expand(sys.argv[2:])
+    if error:
+        print response
+        usage()
+    for i in response:
+        print i['short_url'] + ' corresponds to ' + i['long_url']
+
+else:
     usage()
-print message
