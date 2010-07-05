@@ -26,7 +26,12 @@ def bitly_expand(short_urls):
             print url['short_url'] + ' corresponds to ' + url['long_url']
 
 def bitly_help():
-    print 'Somebody help me?\nWait for a while...'
+    print '''usage: pybitly COMMAND ARGS
+
+The pybitly commands are:
+    shorten     For a long URL, shorten encodes a URL and returns a short one.
+    expand      Given a bit.ly URL, expand decodes it and returns back the target URL.
+    '''
 
 def wrong_usage_warning(error_message = ''):
     print "pybitly: %s See 'pybitly --help'" % error_message
