@@ -6,6 +6,7 @@ __all__ = [
     'TestBitlyAPIClientFunctions',
     'TestShortenAPI',
     'TestExpandAPI',
+    'TestClicksAPI',
 ]
 
 class TestBitlyAPIClientFunctions(unittest.TestCase):
@@ -31,7 +32,7 @@ class TestBitlyAPIClientFunctions(unittest.TestCase):
         expected = 'http://api.bit.ly/v3/shorten?login=my_login&apiKey=R_thisismycrazyapikey&longUrl=http://www.bernardofontes.net'
         self.assertEquals(self.api._get_api_method_url('shorten', self.parameters), expected)
 
-def mocked_API_request_failure(status_code):
+def mocked_shorten_API_response(status_code):
     mocked_api_response = {
         'status_code': status_code,
         'data':{
@@ -46,7 +47,7 @@ class TestShortenAPI(unittest.TestCase):
     def setUp(self):
         self.api = API()
 
-    @patch.object(API, '_invoke_api', mocked_API_request_failure(200))
+    @patch.object(API, '_invoke_api', mocked_shorten_API_response(200))
     def test_shorten_api_response_200(self):
         api_response = self.api.shorten('http://www.bernardofontes.net')
         status_code = api_response['status_code']
@@ -54,7 +55,7 @@ class TestShortenAPI(unittest.TestCase):
         self.assertTrue(api_response.has_key('url'))
         self.assertTrue(api_response['url'])
 
-    @patch.object(API, '_invoke_api', mocked_API_request_failure(403))
+    @patch.object(API, '_invoke_api', mocked_shorten_API_response(403))
     def test_shorten_api_response_403(self):
         api_response = self.api.shorten('http://www.bernardofontes.net')
         status_code = api_response['status_code']
@@ -62,7 +63,7 @@ class TestShortenAPI(unittest.TestCase):
         self.assertTrue(api_response.has_key('error_message'))
         self.assertTrue('Rate limit exceeded' in api_response['error_message'])
 
-    @patch.object(API, '_invoke_api', mocked_API_request_failure(503))
+    @patch.object(API, '_invoke_api', mocked_shorten_API_response(503))
     def test_shorten_api_response_503(self):
         api_response = self.api.shorten('http://www.bernardofontes.net')
         status_code = api_response['status_code']
@@ -70,7 +71,7 @@ class TestShortenAPI(unittest.TestCase):
         self.assertTrue(api_response.has_key('error_message'))
         self.assertTrue('Unknow error or temporary unavailability' in api_response['error_message'])
 
-    @patch.object(API, '_invoke_api', mocked_API_request_failure(500))
+    @patch.object(API, '_invoke_api', mocked_shorten_API_response(500))
     def test_shorten_api_response_500(self):
         api_response = self.api.shorten('http://www.bernardofontes.net')
         status_code = api_response['status_code']
@@ -128,6 +129,61 @@ class TestExpandAPI(unittest.TestCase):
     @patch.object(API, '_invoke_api', mocked_expand_API_request_failure(500))
     def test_expand_api_response_500(self):
         api_response = self.api.expand(['http://bit.ly/hash', 'http://bit.ly/hash2'])
+        status_code = api_response['status_code']
+        self.assertEquals(status_code, 500)
+        self.assertTrue(api_response.has_key('error_message'))
+        self.assertTrue('Invalid request format' in api_response['error_message'])
+
+def mocked_clicks_API_response(status_code):
+    mocked_api_response = {
+        'status_code': status_code,
+        'data':{
+            'clicks':[
+                {
+                    'short_url': 'http://bit.ly/hash',
+                    'global_clicks': 104,
+                },
+                {
+                    'short_url': 'http://bit.ly/hash',
+                    'global_clicks': 42,
+                },
+            ]
+        }
+    }
+    return Mock(return_value=(mocked_api_response))
+
+class TestClicksAPI(unittest.TestCase):
+
+    def setUp(self):
+        self.api = API()
+
+    @patch.object(API, '_invoke_api', mocked_clicks_API_response(200))
+    def test_expand_api_response_200(self):
+        api_response = self.api.clicks(['http://bit.ly/hash', 'http://bit.ly/hash2'])
+        status_code = api_response['status_code']
+        self.assertEquals(status_code, 200)
+        self.assertTrue(api_response.has_key('clicks'))
+        self.assertTrue(len(api_response['clicks']) == 2)
+
+    @patch.object(API, '_invoke_api', mocked_clicks_API_response(403))
+    def test_expand_api_response_403(self):
+        api_response = self.api.clicks(['http://bit.ly/hash', 'http://bit.ly/hash2'])
+        status_code = api_response['status_code']
+        self.assertEquals(status_code, 403)
+        self.assertTrue(api_response.has_key('error_message'))
+        self.assertTrue('Rate limit exceeded' in api_response['error_message'])
+
+    @patch.object(API, '_invoke_api', mocked_clicks_API_response(503))
+    def test_expand_api_response_503(self):
+        api_response = self.api.clicks(['http://bit.ly/hash', 'http://bit.ly/hash2'])
+        status_code = api_response['status_code']
+        self.assertEquals(status_code, 503)
+        self.assertTrue(api_response.has_key('error_message'))
+        self.assertTrue('Unknow error or temporary unavailability' in api_response['error_message'])
+
+    @patch.object(API, '_invoke_api', mocked_clicks_API_response(500))
+    def test_expand_api_response_500(self):
+        api_response = self.api.clicks(['http://bit.ly/hash', 'http://bit.ly/hash2'])
         status_code = api_response['status_code']
         self.assertEquals(status_code, 500)
         self.assertTrue(api_response.has_key('error_message'))

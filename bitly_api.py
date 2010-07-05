@@ -35,6 +35,14 @@ class API(object):
         response = self._invoke_api(api_url)
         return self._prepare_response(response)
 
+    def clicks(self, short_urls):
+        parameters = {
+            'shortUrl': short_urls
+        }
+        api_url = self._get_api_method_url('clicks', parameters)
+        response = self._invoke_api(api_url)
+        return self._prepare_response(response)
+
     def _prepare_response(self, response):
         status_code = response['status_code']
         if status_code!= 200:
