@@ -37,6 +37,8 @@ class API(object):
 
     def clicks(self, short_urls):
         parameters = {
+            'login': self.login,
+            'apiKey': self.api_key,
             'shortUrl': short_urls
         }
         api_url = self._get_api_method_url('clicks', parameters)
