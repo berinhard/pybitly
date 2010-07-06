@@ -22,7 +22,7 @@ def bitly_expand(short_urls):
     if 'error_message' in response:
         print response['error_message']
     else:
-        for url in response:
+        for url in response['expand']:
             print url['short_url'] + ' corresponds to ' + url['long_url']
 
 def bitly_clicks(short_urls):
@@ -33,8 +33,8 @@ def bitly_clicks(short_urls):
     if 'error_message' in response:
         print response['error_message']
     else:
-        for url in response:
-            print url['short_url'] + ' was clicked ' + url['global_clicks'] + ' times'
+        for url in response['clicks']:
+            print url['short_url'] + ' was clicked ' + str(url['global_clicks']) + ' times'
 
 def bitly_help():
     print '''usage: pybitly COMMAND ARGS
