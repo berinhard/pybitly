@@ -39,13 +39,18 @@ Usage
 -----
 
 Shorten API:
-    pybitly --shorten http://big-url-to-be-shorten/
+    pybitly shorten http://long-url-to-be-shorten/
+The short URL will be shown on the terminal.
 
 Expand API:
-    pybitly --expand http://bit.ly/short-url-1 http://bit.ly/short-url-2
+    pybitly expand http://bit.ly/short-url-1 [http://bit.ly/short-url-2]
+The longs URL will be shown on the terminal.
+
+Clicks API:
+    pybitly clicks http://bit.ly/short-url-1 [http://bit.ly/short-url-2]
+How many times the Bitly URL was clicked will be shown on the terminal.
 
 Help:
     pybitly --help
 
-The short URL will be shown on the terminal.
 Enjoy! :-)
