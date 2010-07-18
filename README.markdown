@@ -8,31 +8,19 @@ It's just a Python module that you can use it to consume the API inside your pro
 Besides that, I'm using this project to practise, get more confident with Python programming and learn more about it.
 
 
-Dependencies
-------------
+Dependencies (for development only)
+-----------------------------------
 To run the tests you need the "mock" module. To install "mock", execute:
 
     sudo pip install mock
-
-or
-
-    sudo easy_install mock
 
 Check the mock project at [http://pypi.python.org/pypi/mock/](http://pypi.python.org/pypi/mock/)
 
 
 Installation
 ------------
-To download pybitly and add the project path to your ~/.bashrc, just execute:
-
-    cd
-    wget http://github.com/berinhard/pybitly/tarball/master -O pybitly.tar.gz
-    tar xfz pybitly.tar.gz
-    rm pybitly.tar.gz
-    mv *-pybitly-* pybitly
-    echo 'PATH="$PATH:'$(pwd)'/pybitly"' >> .bashrc
-    . .bashrc
-
+To install Pybitly you just need to execute:
+    sudo pip install git+http://github.com/berinhard/pybitly.git
 
 
 Usage
