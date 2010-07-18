@@ -48,20 +48,25 @@ def wrong_usage_warning(error_message = ''):
     print "pybitly: %s See 'pybitly --help'" % error_message
     sys.exit(1)
 
-if len(sys.argv) < 2:
-    wrong_usage_warning('no command specified.')
-    sys.exit(1)
+def main():
+    if len(sys.argv) < 2:
+        wrong_usage_warning('no command specified.')
+        sys.exit(1)
 
-commands_dict = {
-    'shorten': bitly_shorten,
-    'expand': bitly_expand,
-    'clicks': bitly_clicks,
-}
-command = sys.argv[1]
+    commands_dict = {
+        'shorten': bitly_shorten,
+        'expand': bitly_expand,
+        'clicks': bitly_clicks,
+    }
+    command = sys.argv[1]
 
-if command in commands_dict:
-    commands_dict[command](sys.argv[2:])
-elif command == '--help':
-    bitly_help()
-else:
-    wrong_usage_warning('%s is not a pybitly command.' % command)
+    if command in commands_dict:
+        commands_dict[command](sys.argv[2:])
+    elif command == '--help':
+        bitly_help()
+    else:
+        wrong_usage_warning('%s is not a pybitly command.' % command)
+    sys.exit()
+
+if __name__ == '__main__':
+    main()
