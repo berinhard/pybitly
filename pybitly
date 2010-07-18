@@ -34,7 +34,10 @@ def bitly_clicks(short_urls):
         print response['error_message']
     else:
         for url in response['clicks']:
-            print url['short_url'] + ' was clicked ' + str(url['global_clicks']) + ' times'
+            if 'error' in url:
+                print 'ERROR: ' + url['short_url'] + ' not founded'
+            else:
+                print url['short_url'] + ' was clicked ' + str(url['global_clicks']) + ' times'
 
 def bitly_help():
     print '''usage: pybitly COMMAND ARGS
