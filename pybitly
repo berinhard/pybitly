@@ -1,22 +1,17 @@
 #!/usr/bin/env python
-
 import sys
 from bitly_api import API
-
+import argparse
 
 def bitly_shorten(long_url):
-    if not long_url:
-        wrong_usage_warning('no parameter specified.')
     api = API()
-    response = api.shorten(long_url[0])
+    response = api.shorten(long_url.strip())
     if 'error_message' in response:
         print response['error_message']
     else:
         print response['url']
 
 def bitly_expand(short_urls):
-    if not short_urls:
-        wrong_usage_warning('no parameter specified.')
     api = API()
     response = api.expand(short_urls)
     if 'error_message' in response:
@@ -29,8 +24,6 @@ def bitly_expand(short_urls):
                 print url['short_url'] + ' corresponds to ' + url['long_url']
 
 def bitly_clicks(short_urls):
-    if not short_urls:
-        wrong_usage_warning('no parameter specified.')
     api = API()
     response = api.clicks(short_urls)
     if 'error_message' in response:
@@ -42,36 +35,33 @@ def bitly_clicks(short_urls):
             else:
                 print url['short_url'] + ' was clicked ' + str(url['global_clicks']) + ' times'
 
-def bitly_help():
-    print '''usage: pybitly COMMAND ARGS
-
-The pybitly commands are:
-    shorten     For a long URL, shorten encodes a URL and returns a short one.
-    expand      Given a bit.ly URL, expand decodes it and returns back the target URL.
-    '''
-
-def wrong_usage_warning(error_message = ''):
-    print "pybitly: %s See 'pybitly --help'" % error_message
-    sys.exit(1)
-
-def main():
-    if len(sys.argv) < 2:
-        wrong_usage_warning('no command specified.')
-        sys.exit(1)
-
+def main(method, url):
     commands_dict = {
         'shorten': bitly_shorten,
         'expand': bitly_expand,
         'clicks': bitly_clicks,
     }
-    command = sys.argv[1]
 
-    if command in commands_dict:
-        commands_dict[command](sys.argv[2:])
-    elif command == '--help':
-        bitly_help()
-    else:
-        wrong_usage_warning('%s is not a pybitly command.' % command)
+    try:
+        commands_dict[method](url)
+    except KeyError:
+        print "pybitly: There is no method called %s" % method
+        print "Please, see 'pybitly -h, --help'"
+        sys.exit(1)
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        'method',
+        action='store',
+        help='Choose wath API operation you want to use [shorten, expand, clicks]'
+    )
+    parser.add_argument(
+        'url',
+        action='store',
+        help='Your URL'
+    )
+
+    arguments = parser.parse_args()
+
+    main(arguments.method, arguments.url)
