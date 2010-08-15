@@ -11,17 +11,13 @@ def bitly_shorten(long_url):
     else:
         print response['url']
 
-def bitly_expand(short_urls):
+def bitly_expand(short_url):
     api = API()
-    response = api.expand(short_urls)
+    response = api.expand(short_url)
     if 'error_message' in response:
         print response['error_message']
     else:
-        for url in response['expand']:
-            if 'error' in url:
-                print 'ERROR: ' + url['short_url'] + ' not founded'
-            else:
-                print url['short_url'] + ' corresponds to ' + url['long_url']
+        print response['expand'][0]['short_url'] + ' corresponds to ' + response['expand'][0]['long_url']
 
 def bitly_clicks(short_urls):
     api = API()
