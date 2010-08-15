@@ -19,17 +19,13 @@ def bitly_expand(short_url):
     else:
         print response['expand'][0]['short_url'] + ' corresponds to ' + response['expand'][0]['long_url']
 
-def bitly_clicks(short_urls):
+def bitly_clicks(short_url):
     api = API()
-    response = api.clicks(short_urls)
+    response = api.clicks(short_url)
     if 'error_message' in response:
         print response['error_message']
     else:
-        for url in response['clicks']:
-            if 'error' in url:
-                print 'ERROR: ' + url['short_url'] + ' not founded'
-            else:
-                print url['short_url'] + ' was clicked ' + str(url['global_clicks']) + ' times'
+        print response['clicks'][0]['short_url'] + ' was clicked ' + str(response['clicks'][0]['global_clicks']) + ' times.'
 
 def main(method, url):
     commands_dict = {
