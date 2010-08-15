@@ -22,6 +22,9 @@ Installation
 To install Pybitly you just need to execute:
     sudo pip install git+http://github.com/berinhard/pybitly.git
 
+Another option is clone the project then run:
+    sudo python setup.py install
+
 
 Usage
 -----
@@ -39,6 +42,6 @@ Clicks API:
 How many times the Bitly URL was clicked will be shown on the terminal.
 
 Help:
-    pybitly --help
+    pybitly -h, --help
 
 Enjoy! :-)
