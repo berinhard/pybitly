@@ -34,11 +34,11 @@ Shorten API:
 The short URL will be shown on the terminal.
 
 Expand API:
-    pybitly expand http://bit.ly/short-url-1 [http://bit.ly/short-url-2]
+    pybitly expand http://bit.ly/short-url-1
 The longs URL will be shown on the terminal.
 
 Clicks API:
-    pybitly clicks http://bit.ly/short-url-1 [http://bit.ly/short-url-2]
+    pybitly clicks http://bit.ly/short-url-1
 How many times the Bitly URL was clicked will be shown on the terminal.
 
 Help:
